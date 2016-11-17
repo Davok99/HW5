@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width="1300" height="600"></canvas>
+
+
+
+<script>
+
+  
+
+let canvas = document.getElementById("canvas");
+
+let context = canvas.getContext("2d");
+
+
+
+const NUM_POINTS = 10000; 
+
+
+function get_random_color() 
+{
+    let color = "";
+    for(let i = 0; i < 3; i++) {
+        let sub = Math.floor(Math.random() * 256).toString(16);
+        color += (sub.length == 1 ? "0" + sub : sub);
+    } 
+    return "#" + color;
+}
+
+
+const points = [];
+
+for(let i = 0; i < NUM_POINTS; i++) {
+
+  points.push({
+
+    x: Math.random() * canvas.width,
+
+    y: Math.random() * canvas.height,
+
+    width: Math.random() * 10,
+
+    height: Math.random() * 10,
+
+    xDelta: 1, 
+
+    yDelta: 1,
+
+    color: get_random_color() 
+
+  });
+
+}
+
+
+
+const draw = function() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  points.forEach(function(point){
+    context.fillStyle = point.color;///      1. draw it
+    context.fillRect(point.x, point.y, point.width, point.height);
+  
+  if((point.x + point.width) >= canvas.width){
+    if(point.xDelta>0){
+    point.xDelta = point.xDelta * (-1);
+  }
+  }
+  if(point.x <= 0){
+    if(point.xDelta<0){
+    point.xDelta = point.xDelta * (-1);
+  }
+}
+  if((point.y + point.height) >= canvas.height){
+    if(point.yDelta>0){
+    point.yDelta = point.yDelta * (-1);
+  }
+}
+  if((point.y) <= 0){
+    if(point.yDelta<0){
+    point.yDelta = point.yDelta *(-1);
+  }
+}
+  point.x += point.xDelta;
+  point.y += point.yDelta;
+
+    
+  });
+
+};
+
+
+
+let animate = function() {
+
+    draw();
+
+    setTimeout(animate, 10);
+
+};
+
+animate();
+
+
+
+</script>
+</body>
+</html>
